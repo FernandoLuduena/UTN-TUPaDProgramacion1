@@ -1,0 +1,4 @@
+nombre,precio,cantidad
+Arroz,1200,15
+Fideos,950,20
+Aceite,2500,10
