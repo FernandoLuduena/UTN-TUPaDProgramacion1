@@ -99,32 +99,53 @@ def filtrar_pais():
     print("2.Por rango de poblacion.")
     print("3.Por rango de superficie.")
     opcion = input("Elija una opcion: ").strip()
+
     with open(ARCHIVO, "r", encoding="utf-8") as f:
         lector = csv.DictReader(f)
         paises = list(lector)
+
     filtrados = []
+
     if opcion == "1":
         cont = input("Ingrese el nombre del continente: ").strip().lower()
         filtrados = [p for p in paises if p["continente"].lower() == cont]
+
     elif opcion == "2":
         min_pob = input("Poblacion minima: ").strip()
         max_pob = input("Poblacion maxima: ").strip()
+
         if not (min_pob.isdigit() and max_pob.isdigit()):
             print("Error: los valores deben ser numeros.")
             return
+
         min_pob, max_pob = int(min_pob), int(max_pob)
-        filtrados = [p for p in paises if min_pob <= int(p["poblacion"]) <= max_pob]
+
+        filtrados = [
+            p for p in paises
+            if p["poblacion"].strip() != ""
+            and min_pob <= int(p["poblacion"].strip()) <= max_pob
+        ]
+
     elif opcion == "3":
         min_sup = input("Superficie minima(KM): ").strip()
         max_sup = input("Superficie maxima(KM): ").strip()
+
         if not (min_sup.isdigit() and max_sup.isdigit()):
             print("Error: los valores deben ser numeros.")
             return
+
         min_sup, max_sup = int(min_sup), int(max_sup)
-        filtrados = [p for p in paises if min_sup <= int(p["superficie"]) <= max_sup]
+
+        filtrados = [
+            p for p in paises
+            if p["superficie"].strip() != ""
+            and min_sup <= int(p["superficie"].strip()) <= max_sup
+        ]
+
     else:
         print("Opcion invalida.")
         return
+
     if filtrados:
         print(f"Se encontraron {len(filtrados)} resultado(s):\n")
         for pais in filtrados:
@@ -137,46 +158,82 @@ def ordenar_paises():
     print("1.Por nombre.")
     print("2.Por poblacion.")
     print("3.Por superficie.")
+
     criterio = input("Elija una opcion: ").strip()
     orden = input("¿Orden Ascendente(A) o Descendente(D)? ").strip().upper()
     descendente = orden == "D"
+
     with open(ARCHIVO, "r", encoding="utf-8") as f:
         lector = csv.DictReader(f)
         paises = list(lector)
+
     if not paises:
         print("No hay paises registrados.")
         return
+
+    
+    paises = [
+        p for p in paises
+        if p["nombre"].strip() != "" 
+        and p["poblacion"].strip() != "" 
+        and p["superficie"].strip() != "" 
+        and p["continente"].strip() != ""
+    ]
+
     if criterio == "1":
         paises.sort(key=lambda p: p["nombre"].lower(), reverse=descendente)
+
     elif criterio == "2":
-        paises.sort(key=lambda p: int(p["poblacion"]), reverse=descendente)
+        paises.sort(key=lambda p: int(p["poblacion"].strip()), reverse=descendente)
+
     elif criterio == "3":
-        paises.sort(key=lambda p: int(p["superficie"]), reverse=descendente)
+        paises.sort(key=lambda p: int(p["superficie"].strip()), reverse=descendente)
+
     else:
         print("Opción inválida.")
         return
+
     print("\nPaíses ordenados:\n")
-    mostrar_paises(paises)
+    for p in paises:
+        print(f"{p['nombre']} - {p['continente']} | {p['poblacion']} hab | {p['superficie']} km²")
 
 def mostrar_estadisticas():
     print("-----Estadisticas de Paises-----")
+
     with open(ARCHIVO, "r", encoding="utf-8") as f:
         lector = csv.DictReader(f)
         paises = list(lector)
+
     if not paises:
         print("No hay datos cargados.")
         return
+
+    paises = [
+        p for p in paises
+        if p["poblacion"].strip() != "" 
+        and p["superficie"].strip() != ""
+        and p["nombre"].strip() != ""
+        and p["continente"].strip() != ""
+    ]
+
+    if not paises:
+        print("No hay datos válidos para calcular estadísticas.")
+        return
+
     for p in paises:
-        p["poblacion"] = int(p["poblacion"])
-        p["superficie"] = int(p["superficie"])
+        p["poblacion"] = int(p["poblacion"].strip())
+        p["superficie"] = int(p["superficie"].strip())
+
     mayor = max(paises, key=lambda x: x["poblacion"])
     menor = min(paises, key=lambda x: x["poblacion"])
     prom_pob = sum(p["poblacion"] for p in paises) / len(paises)
     prom_sup = sum(p["superficie"] for p in paises) / len(paises)
+
     continentes = {}
     for p in paises:
         cont = p["continente"]
         continentes[cont] = continentes.get(cont, 0) + 1
+
     print(f"\n País con mayor población: {mayor['nombre']} ({mayor['poblacion']} hab)")
     print(f" País con menor población: {menor['nombre']} ({menor['poblacion']} hab)")
     print(f"\n Promedio de población: {prom_pob:.2f}")

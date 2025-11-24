@@ -29,6 +29,6 @@ while opcion != "0":
         case "6":
             mostrar_estadisticas()
         case "0":
-            print("Saliendo...")
+            print("Saliendo...") 
         case _:
             print("Opción inválida.")
