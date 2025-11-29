@@ -5,7 +5,8 @@
 - **Diaz Chiara**  
 - **Ludueña Fernando**  
 **Materia:** Programación I – Tecnicatura Universitaria en Programación (UTN)
-
+**Video Youtube Parte 1 Chiara:** https://youtu.be/eALifo6V2gc
+**Video Youtube Parte 2 Fernando** https://youtu.be/E5ak7X989IY
 ---
 
 ## 📌 Descripción General del Programa
@@ -48,9 +49,6 @@ Cada país contiene:
    - País con mayor/menor población, promedios de población y superficie, y conteo por continente.
 
 ---
-
-## 🗂 Archivo utilizado
-
 ## 🗂 Archivo utilizado
 El sistema trabaja con:
 

@@ -27,7 +27,7 @@ while opcion != "0":
         case "5":
             ordenar_paises()
         case "6":
-            mostrar_estadisticas()
+            mostrar_estadisticas() 
         case "0":
             print("Saliendo...") 
         case _:
